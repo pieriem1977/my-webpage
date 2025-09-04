@@ -26,7 +26,17 @@
       font-size: 22px;
       font-weight: bold;
       color: #333;
-      display: none; /* hidden until clicked */
+      opacity: 0; /* hidden initially */
+      display: inline-block;
+    }
+
+    /* bounce keyframes */
+    @keyframes bounce {
+      0%   { transform: translateY(0); }
+      30%  { transform: translateY(-10px); }
+      50%  { transform: translateY(5px); }
+      70%  { transform: translateY(-5px); }
+      100% { transform: translateY(0); }
     }
   </style>
 </head>
@@ -34,11 +44,27 @@
   <h1>Who is the best brother?</h1>
   <button onclick="showAnswer()">Click Me</button>
 
-  <p id="answer">O Broulis o Yiangoulis!!!!!</p>
+  <p id="answer"></p>
 
   <script>
+    const message = "O Broulis o Yiangoulis!!!!!";
+    const answerElement = document.getElementById("answer");
+
     function showAnswer() {
-      document.getElementById("answer").style.display = "block";
+      answerElement.innerHTML = ""; // clear previous text
+      answerElement.style.opacity = 1; // fade in container
+
+      let i = 0;
+      const typing = setInterval(() => {
+        const span = document.createElement("span");
+        span.innerText = message[i];
+        span.style.display = "inline-block";
+        span.style.animation = "bounce 0.5s";
+        answerElement.appendChild(span);
+
+        i++;
+        if (i === message.length) clearInterval(typing);
+      }, 100); // 100ms per letter
     }
   </script>
 </body>
